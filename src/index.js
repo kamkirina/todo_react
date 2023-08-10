@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-import TaskList from "./components/TaskList/TaskList";
-import Footer from "./components/Footer/Footer";
+import TaskList from "./components/TaskList";
+import Footer from "./components/Footer";
 import "./style.css";
 const container = document.getElementById("root");
 const root = createRoot(container);
