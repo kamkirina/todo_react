@@ -22,7 +22,7 @@ export default class Task extends Component {
   };
 
   render() {
-    const { description, time } = this.props;
+    const { description, time, onDeleted } = this.props;
     const { completed, editing } = this.state;
 
     let liClassName = "";
@@ -48,7 +48,7 @@ export default class Task extends Component {
             <span class="created">{time}</span>
           </label>
           <button class="icon icon-edit" onClick={this.onEditClick}></button>
-          <button class="icon icon-destroy"></button>
+          <button class="icon icon-destroy" onClick={onDeleted}></button>
         </div>
       </li>
     );
