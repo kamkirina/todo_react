@@ -3,27 +3,31 @@ import "./Task.css";
 
 export default class Task extends Component {
   state = {
-    completed: false,
-    editing: false,
+    description: this.props.description,
   };
-
-  oncheckboxClick = () => {
-    this.setState((state) => {
-      return {
-        completed: !state.completed,
-      };
-    });
-  };
-
-  onEditClick = () => {
+  onTaskEdit = (event) => {
     this.setState({
-      editing: true,
+      description: event.target.value,
     });
   };
 
+  onEdit = (event) => {
+    if (event.key === "Enter" || event.type === "blur") {
+      // this.props.onTaskEdit(this.state.description);
+      this.props.onTaskEdit(this.state.description);
+      this.props.onToggleEdit();
+    }
+  };
   render() {
-    const { description, time, onDeleted } = this.props;
-    const { completed, editing } = this.state;
+    const {
+      completed,
+      editing,
+      description,
+      time,
+      onDeleted,
+      onToggleDone,
+      onToggleEdit,
+    } = this.props;
 
     let liClassName = "";
     if (completed) {
@@ -32,23 +36,27 @@ export default class Task extends Component {
 
     if (editing) {
       liClassName = "editing";
-      return <input type="text" class="edit" value="Editing task" />;
+      return (
+        <input
+          type="text"
+          className="edit"
+          value={this.state.description}
+          onChange={this.onTaskEdit}
+          onKeyUp={this.onEdit}
+          onBlur={this.onEdit}
+        />
+      );
     }
-
     return (
       <li className={liClassName}>
-        <div class="view">
-          <input
-            class="toggle"
-            type="checkbox"
-            onClick={this.oncheckboxClick}
-          />
+        <div className="view">
+          <input className="toggle" type="checkbox" onClick={onToggleDone} />
           <label>
-            <span class="description">{description}</span>
-            <span class="created">{time}</span>
+            <span className="description">{description}</span>
+            <span className="created">{time}</span>
           </label>
-          <button class="icon icon-edit" onClick={this.onEditClick}></button>
-          <button class="icon icon-destroy" onClick={onDeleted}></button>
+          <button className="icon icon-edit" onClick={onToggleEdit}></button>
+          <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
       </li>
     );
