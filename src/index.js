@@ -1,23 +1,21 @@
-import { Component } from "react";
-import { createRoot } from "react-dom/client";
-import TaskList from "./components/TaskList";
-import Footer from "./components/Footer";
-import "./style.css";
-import NewTask from "./components/NewTaskForm/NewtaskForm";
-import { formatDistanceToNow } from "date-fns";
-const container = document.getElementById("root");
-const root = createRoot(container);
+import { Component } from 'react'
+import { createRoot } from 'react-dom/client'
+import { formatDistanceToNow } from 'date-fns'
+
+import TaskList from './components/TaskList'
+import Footer from './components/Footer'
+import './style.css'
+import NewTask from './components/NewTaskForm/NewtaskForm'
+
+const container = document.getElementById('root')
+const root = createRoot(container)
 
 export default class App extends Component {
-  maxId = 100;
+  maxId = 100
   state = {
-    todos: [
-      this.createTask("Completed task"),
-      this.createTask("Editing task"),
-      this.createTask("Active task"),
-    ],
-    filter: "all",
-  };
+    todos: [this.createTask('Completed task'), this.createTask('Editing task'), this.createTask('Active task')],
+    filter: 'all',
+  }
 
   createTask(text) {
     return {
@@ -26,99 +24,99 @@ export default class App extends Component {
       editing: false,
       description: text,
       time: formatDistanceToNow(Date.now(), { includeSeconds: true }),
-    };
+    }
   }
 
   deleteTask = (id) => {
     this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
-      const newArr = [...todos.slice(0, idx), ...todos.slice(idx + 1)];
+      const idx = todos.findIndex((el) => el.id === id)
+      const newArr = [...todos.slice(0, idx), ...todos.slice(idx + 1)]
       return {
         todos: newArr,
-      };
-    });
-  };
+      }
+    })
+  }
 
   addTask = (text) => {
-    const newTask = this.createTask(text);
+    const newTask = this.createTask(text)
 
     this.setState(({ todos }) => {
-      const newArr = [...todos, newTask];
+      const newArr = [...todos, newTask]
       return {
         todos: newArr,
-      };
-    });
-  };
+      }
+    })
+  }
   filter(todos, filter) {
     switch (filter) {
-      case "all":
-        return todos;
-      case "active":
-        return todos.filter((todo) => !todo.completed);
-      case "completed":
-        return todos.filter((todo) => todo.completed);
+      case 'all':
+        return todos
+      case 'active':
+        return todos.filter((todo) => !todo.completed)
+      case 'completed':
+        return todos.filter((todo) => todo.completed)
       default:
-        return todos;
+        return todos
     }
   }
 
   clearCompleted = () => {
     this.setState(({ todos }) => {
-      const newArr = todos.filter((todo) => !todo.completed);
+      const newArr = todos.filter((todo) => !todo.completed)
 
       return {
         todos: newArr,
-      };
-    });
-  };
+      }
+    })
+  }
   onFilterChange = (filter) => {
-    this.setState({ filter });
-  };
+    this.setState({ filter })
+  }
   onToggle = (arr, id, key) => {
-    const idx = arr.findIndex((el) => el.id === id);
+    const idx = arr.findIndex((el) => el.id === id)
 
-    const oldItem = arr[idx];
+    const oldItem = arr[idx]
 
-    const newItem = { ...oldItem, [key]: !oldItem[key] };
+    const newItem = { ...oldItem, [key]: !oldItem[key] }
 
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
-  };
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]
+  }
 
   editTask = (id, text) => {
     this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id);
+      const idx = todos.findIndex((el) => el.id === id)
 
-      const oldItem = todos[idx];
+      const oldItem = todos[idx]
 
-      const newItem = { ...oldItem, description: text };
+      const newItem = { ...oldItem, description: text }
 
-      const newArr = [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)];
+      const newArr = [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)]
       return {
         todos: newArr,
-      };
-    });
-  };
+      }
+    })
+  }
 
   onToggleEdite = (id) => {
     this.setState(({ todos }) => {
       return {
-        todos: this.onToggle(todos, id, "editing"),
-      };
-    });
-  };
+        todos: this.onToggle(todos, id, 'editing'),
+      }
+    })
+  }
 
   onToggleDone = (id) => {
     this.setState(({ todos }) => {
       return {
-        todos: this.onToggle(todos, id, "completed"),
-      };
-    });
-  };
+        todos: this.onToggle(todos, id, 'completed'),
+      }
+    })
+  }
 
   render() {
-    const { todos, filter } = this.state;
-    const doneCount = todos.filter((el) => !el.completed).length;
-    const visibleTodos = this.filter(todos, filter);
+    const { todos, filter } = this.state
+    const doneCount = todos.filter((el) => !el.completed).length
+    const visibleTodos = this.filter(todos, filter)
 
     return (
       <div className="todoapp">
@@ -142,8 +140,8 @@ export default class App extends Component {
           />
         </section>
       </div>
-    );
+    )
   }
 }
 
-root.render(<App />);
+root.render(<App />)

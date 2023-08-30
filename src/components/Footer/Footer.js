@@ -1,10 +1,11 @@
-import { Component } from "react";
-import "./Footer.css";
-import TaskFilter from "../TasksFilter/TaskFilter";
+import { Component } from 'react'
+
+import './Footer.css'
+import TaskFilter from '../TasksFilter/TaskFilter'
 
 export default class Footer extends Component {
   render() {
-    const { doneCount, clearCompleted, filter, onFilterChange } = this.props;
+    const { doneCount, clearCompleted, filter, onFilterChange } = this.props
 
     return (
       <footer className="footer">
@@ -14,6 +15,6 @@ export default class Footer extends Component {
           Clear completed
         </button>
       </footer>
-    );
+    )
   }
 }

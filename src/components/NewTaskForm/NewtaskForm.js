@@ -1,27 +1,24 @@
-import { Component } from "react";
-import "../NewTaskForm/NewTaskForm.css";
+import { Component } from 'react'
+import '../NewTaskForm/NewTaskForm.css'
 
 export default class NewTask extends Component {
   state = {
-    description: "",
-  };
+    description: '',
+  }
 
   onTaskAdded = (event) => {
     this.setState({
       description: event.target.value,
-    });
-  };
+    })
+  }
   onSubmit = (event) => {
-    if (
-      event.key === "Enter" ||
-      (event.type === "blur" && this.state.description !== "")
-    ) {
-      this.props.onTaskAdded(this.state.description);
+    if (event.key === 'Enter' || (event.type === 'blur' && this.state.description !== '')) {
+      this.props.onTaskAdded(this.state.description)
       this.setState({
-        description: "",
-      });
+        description: '',
+      })
     }
-  };
+  }
   render() {
     return (
       <input
@@ -33,6 +30,6 @@ export default class NewTask extends Component {
         value={this.state.description}
         autoFocus
       />
-    );
+    )
   }
 }

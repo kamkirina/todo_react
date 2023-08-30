@@ -1,16 +1,10 @@
-import Task from "../Task";
-import "./TaskList.css";
+import Task from '../Task'
+import './TaskList.css'
 
-const TaskList = ({
-  todos,
-  onDeleted,
-  onToggleEdit,
-  onTaskEdit,
-  onToggleDone,
-}) => {
-  const elements = [];
+const TaskList = ({ todos, onDeleted, onToggleEdit, onTaskEdit, onToggleDone }) => {
+  const elements = []
   todos.forEach((el) => {
-    const { id } = el;
+    const { id } = el
     elements.push(
       <Task
         {...el}
@@ -20,17 +14,17 @@ const TaskList = ({
         onDeleted={() => onDeleted(id)}
         onToggleDone={() => onToggleDone(id)}
       />
-    );
-    return elements;
-  });
-  return <ul className="todo-list">{elements}</ul>;
-};
+    )
+    return elements
+  })
+  return <ul className="todo-list">{elements}</ul>
+}
 
 TaskList.defaultProps = {
   onToggleEdit: () => {},
   onTaskEdit: () => {},
   onDeleted: () => {},
   onToggleDone: () => {},
-};
+}
 
-export default TaskList;
+export default TaskList
