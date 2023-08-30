@@ -4,6 +4,7 @@ import TaskList from "./components/TaskList";
 import Footer from "./components/Footer";
 import "./style.css";
 import NewTask from "./components/NewTaskForm/NewtaskForm";
+import { formatDistanceToNow } from "date-fns";
 const container = document.getElementById("root");
 const root = createRoot(container);
 
@@ -24,7 +25,7 @@ export default class App extends Component {
       completed: false,
       editing: false,
       description: text,
-      time: "created 5 minutes ago",
+      time: formatDistanceToNow(Date.now(), { includeSeconds: true }),
     };
   }
 
@@ -116,8 +117,9 @@ export default class App extends Component {
 
   render() {
     const { todos, filter } = this.state;
-    const doneCount = this.state.todos.filter((el) => !el.completed).length;
+    const doneCount = todos.filter((el) => !el.completed).length;
     const visibleTodos = this.filter(todos, filter);
+
     return (
       <div className="todoapp">
         <header className="header">

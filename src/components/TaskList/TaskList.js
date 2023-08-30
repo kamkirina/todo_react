@@ -26,4 +26,11 @@ const TaskList = ({
   return <ul className="todo-list">{elements}</ul>;
 };
 
+TaskList.defaultProps = {
+  onToggleEdit: () => {},
+  onTaskEdit: () => {},
+  onDeleted: () => {},
+  onToggleDone: () => {},
+};
+
 export default TaskList;
