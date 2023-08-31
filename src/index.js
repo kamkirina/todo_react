@@ -9,7 +9,7 @@ import NewTask from './components/NewTaskForm/NewtaskForm'
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-
+console.log()
 export default class App extends Component {
   maxId = 100
   state = {
