@@ -38,7 +38,7 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "format": "prettier",
-    "prepare": "node_modules/.bin/husky-run install"
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
