@@ -6,7 +6,7 @@ import TaskList from './components/TaskList'
 import Footer from './components/Footer'
 import './style.css'
 import NewTask from './components/NewTaskForm/NewtaskForm'
-console.log()
+
 const container = document.getElementById('root')
 const root = createRoot(container)
 
