@@ -2,10 +2,9 @@ import Task from '../Task'
 import './TaskList.css'
 
 const TaskList = ({ todos, onDeleted, onToggleEdit, onTaskEdit, onToggleDone }) => {
-  const elements = []
-  todos.forEach((el) => {
+  const elements = todos.map((el) => {
     const { id } = el
-    elements.push(
+    return (
       <Task
         {...el}
         key={id}
@@ -15,7 +14,6 @@ const TaskList = ({ todos, onDeleted, onToggleEdit, onTaskEdit, onToggleDone }) 
         onToggleDone={() => onToggleDone(id)}
       />
     )
-    return elements
   })
   return <ul className="todo-list">{elements}</ul>
 }

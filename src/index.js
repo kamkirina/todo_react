@@ -29,8 +29,7 @@ export default class App extends Component {
 
   deleteTask = (id) => {
     this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id)
-      const newArr = [...todos.slice(0, idx), ...todos.slice(idx + 1)]
+      const newArr = todos.filter((el) => el.id !== id)
       return {
         todos: newArr,
       }
