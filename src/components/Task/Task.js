@@ -24,13 +24,33 @@ export default class Task extends Component {
       this.props.onToggleEdit()
     }
   }
+
+  secondsToTime(sec) {
+    const minString = String(Math.floor(sec / 60)).padStart(2, '0')
+    const secString = String(sec % 60).padStart(2, '0')
+    return `${minString}:${secString}`
+  }
+
   render() {
-    const { completed, editing, description, time, onDeleted, onToggleDone, onToggleEdit } = this.props
+    const {
+      completed,
+      editing,
+      description,
+      time,
+      timer,
+      onDeleted,
+      onToggleDone,
+      onToggleEdit,
+      startTimer,
+      stopTimer,
+    } = this.props
     let check = false
     let liClassName = classNames(this.props.className, {
       completed: completed,
       editing: editing,
     })
+
+    const timeString = this.secondsToTime(timer)
     if (completed) {
       check = true
     }
@@ -52,7 +72,11 @@ export default class Task extends Component {
         <div className="view">
           <input className="toggle" type="checkbox" onClick={onToggleDone} checked={check} />
           <label>
-            <span className="description">{description}</span>
+            <span className="title">{description}</span>
+            <span className="description">
+              <button className="icon icon-play" onClick={startTimer}></button>
+              <button className="icon icon-pause" onClick={stopTimer}></button> {timeString}
+            </span>
             <span className="created">{time}</span>
           </label>
           <button className="icon icon-edit" onClick={onToggleEdit}></button>
