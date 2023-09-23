@@ -85,6 +85,7 @@ export default class App extends Component {
   }
 
   editTask = (id, text) => {
+    this.stopTimer(id)
     this.setState(({ todos }) => {
       const idx = todos.findIndex((el) => el.id === id)
 

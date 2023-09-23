@@ -13,6 +13,7 @@ export default class Task extends Component {
   }
 
   onEdit = (event) => {
+    this.props.stopTimer()
     if (event.key === 'Enter') {
       this.props.onTaskEdit(this.state.description)
       this.props.onToggleEdit()
