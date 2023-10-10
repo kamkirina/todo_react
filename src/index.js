@@ -17,14 +17,14 @@ export default class App extends Component {
     filter: 'all',
   }
 
-  createTask(text) {
+  createTask(text, timer = 0) {
     return {
       id: this.maxId++,
       completed: false,
       editing: false,
       description: text,
       time: formatDistanceToNow(Date.now(), { includeSeconds: true }),
-      timer: 0,
+      timer,
       intervalId: 0,
     }
   }
@@ -39,8 +39,8 @@ export default class App extends Component {
     })
   }
 
-  addTask = (text) => {
-    const newTask = this.createTask(text)
+  addTask = (text, timer) => {
+    const newTask = this.createTask(text, timer)
 
     this.setState(({ todos }) => {
       const newArr = [...todos, newTask]
