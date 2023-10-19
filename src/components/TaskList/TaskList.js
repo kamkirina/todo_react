@@ -1,7 +1,7 @@
 import Task from '../Task'
 import './TaskList.css'
 
-const TaskList = ({ todos, onDeleted, onToggleEdit, onTaskEdit, onToggleDone }) => {
+const TaskList = ({ todos, onDeleted, onTaskEdit, onToggleDone, onToggleEdit, editTimer }) => {
   const elements = todos.map((el) => {
     const { id } = el
     return (
@@ -10,6 +10,7 @@ const TaskList = ({ todos, onDeleted, onToggleEdit, onTaskEdit, onToggleDone }) 
         key={id}
         onToggleEdit={() => onToggleEdit(id)}
         onTaskEdit={(text) => onTaskEdit(id, text)}
+        editTimer={(timer) => editTimer(id, timer)}
         onDeleted={() => onDeleted(id)}
         onToggleDone={() => onToggleDone(id)}
       />

@@ -1,52 +1,45 @@
-import { Component } from 'react'
+import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { formatDistanceToNow } from 'date-fns'
 
 import TaskList from './components/TaskList'
 import Footer from './components/Footer'
 import './style.css'
-import NewTask from './components/NewTaskForm/NewtaskForm'
+import NewTask from './components/NewTask'
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-
-export default class App extends Component {
-  maxId = 100
-  state = {
-    todos: [this.createTask('Completed task'), this.createTask('Editing task'), this.createTask('Active task')],
-    filter: 'all',
-  }
-
-  createTask(text) {
+let maxId = 100
+function App() {
+  const createTask = (text, timer = 0) => {
     return {
-      id: this.maxId++,
+      id: maxId++,
       completed: false,
       editing: false,
       description: text,
       time: formatDistanceToNow(Date.now(), { includeSeconds: true }),
+      timer,
+      checkTimer: false,
     }
   }
+  const [todos, setTodos] = useState([
+    createTask('Completed task'),
+    createTask('Editing task'),
+    createTask('Active task'),
+  ])
+  const [filter, setFilter] = useState('all')
 
-  deleteTask = (id) => {
-    this.setState(({ todos }) => {
-      const newArr = todos.filter((el) => el.id !== id)
-      return {
-        todos: newArr,
-      }
-    })
+  const deleteTask = (id) => {
+    const newArr = todos.filter((el) => el.id !== id)
+    setTodos(newArr)
   }
 
-  addTask = (text) => {
-    const newTask = this.createTask(text)
-
-    this.setState(({ todos }) => {
-      const newArr = [...todos, newTask]
-      return {
-        todos: newArr,
-      }
-    })
+  const addTask = (text, timer) => {
+    const newTask = createTask(text, timer)
+    const newArr = [...todos, newTask]
+    setTodos(newArr)
   }
-  filter(todos, filter) {
+  const changeFilter = (todos, filter) => {
     switch (filter) {
       case 'all':
         return todos
@@ -59,88 +52,70 @@ export default class App extends Component {
     }
   }
 
-  clearCompleted = () => {
-    this.setState(({ todos }) => {
-      const newArr = todos.filter((todo) => !todo.completed)
+  const clearCompleted = () => {
+    const newArr = todos.filter((todo) => !todo.completed)
+    setTodos(newArr)
+  }
 
-      return {
-        todos: newArr,
-      }
-    })
+  const onFilterChange = (filter) => {
+    setFilter(filter)
   }
-  onFilterChange = (filter) => {
-    this.setState({ filter })
-  }
-  onToggle = (arr, id, key) => {
+
+  const onToggle = (arr, id, key) => {
     const idx = arr.findIndex((el) => el.id === id)
-
     const oldItem = arr[idx]
-
     const newItem = { ...oldItem, [key]: !oldItem[key] }
-
     return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)]
   }
 
-  editTask = (id, text) => {
-    this.setState(({ todos }) => {
-      const idx = todos.findIndex((el) => el.id === id)
-
-      const oldItem = todos[idx]
-
-      const newItem = { ...oldItem, description: text }
-
-      const newArr = [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)]
-      return {
-        todos: newArr,
-      }
-    })
+  const editTask = (id, text) => {
+    const idx = todos.findIndex((el) => el.id === id)
+    const oldItem = todos[idx]
+    const newItem = { ...oldItem, description: text }
+    const newArr = [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)]
+    setTodos(newArr)
   }
 
-  onToggleEdite = (id) => {
-    this.setState(({ todos }) => {
-      return {
-        todos: this.onToggle(todos, id, 'editing'),
-      }
-    })
+  const editTimer = (id, timer) => {
+    const idx = todos.findIndex((el) => el.id === id)
+    const oldItem = todos[idx]
+    const newItem = { ...oldItem, timer }
+    const newArr = [...todos.slice(0, idx), newItem, ...todos.slice(idx + 1)]
+    setTodos(newArr)
   }
 
-  onToggleDone = (id) => {
-    this.setState(({ todos }) => {
-      return {
-        todos: this.onToggle(todos, id, 'completed'),
-      }
-    })
+  const onToggleEdite = (id) => {
+    const newArr = onToggle(todos, id, 'editing')
+    setTodos(newArr)
   }
 
-  render() {
-    const { todos, filter } = this.state
-    const doneCount = todos.filter((el) => !el.completed).length
-    const visibleTodos = this.filter(todos, filter)
-
-    return (
-      <div className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <NewTask onTaskAdded={this.addTask} />
-        </header>
-        <section className="main">
-          <TaskList
-            todos={visibleTodos}
-            onDeleted={this.deleteTask}
-            onToggleEdit={this.onToggleEdite}
-            onTaskEdit={this.editTask}
-            onToggleDone={this.onToggleDone}
-          />
-          <Footer
-            doneCount={doneCount}
-            filter={filter}
-            onFilterChange={this.onFilterChange}
-            clearCompleted={this.clearCompleted}
-          />
-        </section>
-      </div>
-    )
+  const onToggleDone = (id) => {
+    const newArr = onToggle(todos, id, 'completed')
+    setTodos(newArr)
   }
+
+  const doneCount = todos.filter((el) => !el.completed).length
+  const visibleTodos = changeFilter(todos, filter)
+
+  return (
+    <div className="todoapp">
+      <header className="header">
+        <h1>todos</h1>
+        <NewTask onTaskAdded={addTask} />
+      </header>
+      <section className="main">
+        <TaskList
+          todos={visibleTodos}
+          onDeleted={deleteTask}
+          onToggleEdit={onToggleEdite}
+          onTaskEdit={editTask}
+          onToggleDone={onToggleDone}
+          editTimer={editTimer}
+        />
+        <Footer doneCount={doneCount} filter={filter} onFilterChange={onFilterChange} clearCompleted={clearCompleted} />
+      </section>
+    </div>
+  )
 }
 
 root.render(<App />)
